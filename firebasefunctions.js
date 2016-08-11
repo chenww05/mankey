@@ -12,6 +12,7 @@ $(function() {
 	
 	//Creating the firebase reference.
     var firebaseref = new Firebase("https://weddingplanner-5a174.firebaseio.com");
+    var database = firebase.database();
 
 	//Global Variables for userData and the firebase reference to the list.
     var listRef = null;
@@ -135,56 +136,50 @@ $(function() {
 	
 	//Setting the 3 firebase events to call different functions that handle the specific functionality of the app.
     var setUpFirebaseEvents = function() {
-        listRef = new Firebase('https://weddingplanner-5a174.firebaseio.com/items');
+        listRef = firebase.database().ref('user-wedding/' + userData.uid);
+        listRef.on('value', function(snapshot) {
+            console.log("snapshot");
+            console.log(snapshot.val());
+            snapshot.forEach(function(childSnapshot) {
+                // childData will be the actual contents of the child
+                var wedding = childSnapshot.val();
+                console.log('wedding object: ' + wedding);
+                var weddingRef = database.ref('weddings/' + wedding);
+                weddingRef.on('value', function(snapshot) {
+                    var listItem = snapshot.val();
+                    var author = listItem.uid;
+                    var content = listItem.body;
+                    var timestamp = listItem.timestamp;
+                    var id = 'key_id';
+                    //var css = listItem.css;
+                    var $newListItem = $("<li data-item-id='" + id + "'></li>").html("<p class='itemauthor'>Added By - " + author +
+                        "<span class='removebtn'><i class='fa fa-remove'></i></span> " +
+                        "<span class='time'> on " + timestamp + "</span></p><p class='itemtext'>" + content + "</p>");
+                    $newListItem.prependTo($("#sharedlist"));
+                    //$newListItem.attr('style', css);
+                    //$("#sharedlist").prepend($newListItem);
+                    bindEventsToItems($newListItem);
+                });
+            });
+
+        });
         $("#sharedlist").html('');
-        listRef.off('child_added', childAddedFunction)
-        listRef.on("child_added", childAddedFunction);
-
-        listRef.off('child_changed', childChangedFunction);
-        listRef.on('child_changed', childChangedFunction);
-
-        listRef.off('child_removed', childRemovedFunction);
-        listRef.on('child_removed', childRemovedFunction);
+        // listRef.off('child_added', childAddedFunction)
+        // listRef.on("child_added", childAddedFunction);
+        //
+        // listRef.off('child_changed', childChangedFunction);
+        // listRef.on('child_changed', childChangedFunction);
+        //
+        // listRef.off('child_removed', childRemovedFunction);
+        // listRef.on('child_removed', childRemovedFunction);
     }
-	
-    // //This function is a callback for ref.onAuth() and is triggered every time the login status of the user changes.
-    // //This function is also called when the app is initialized (and hence helps you in maintaining the session for a user).
-    // var authDataCallback = function(authData) {
-    //     console.log("authCallback Event is called from onAuth Event");
-    //     if (authData) {
-    //         console.log("User " + authData.uid + " is logged in with " + authData.provider);
-    //         userData = authData;
-    //         loadProfile();
-    //         setUpFirebaseEvents();
-    //
-    //     } else {
-    //         console.log("User is logged out");
-    //         $(".status").html('You are not logged in!').show();
-    //         userData = null;
-    //         listRef = null;
-    //     }
-    // }
-    //
-    // firebase.auth().onAuthStateChanged(function(userData) {
-    //     console.log("User Auth State chanced is triggered. " + userData;
-    //     // if (user) {
-    //     //     console.log("User " + user.uid + " is logged in with " + user.provider);
-    //     //     userData = user;
-    //     //     loadProfile();
-    //     //     setUpFirebaseEvents();
-    //     // } else {
-    //     //     console.log("User is logged out");
-    //     //     $(".status").html('You are not logged in!').show();
-    //     //     userData = null;
-    //     //     listRef = null;
-    //     // }
-    // });
 
     firebase.auth().onAuthStateChanged(function(userData) {
         console.log("User Auth State chanced is triggered. " + userData);
         if (userData) {
             console.log("User logined");
             loadProfile();
+            console.log("What happend?");
             setUpFirebaseEvents();
         } else {
             console.log("User logout");
@@ -275,7 +270,6 @@ $(function() {
 	
 	//Logout action handler
     $("#logout").on('click', function() {
-        //firebaseref.unauth();
         firebase.auth().signOut().then(function() {
             // Sign-out successful.
         }, function(error) {
@@ -402,30 +396,52 @@ $(function() {
 	
 	//Pushing new items to Firebase list. This is called when a user click on "AddNewItem Button"
     var addListItem = function(content) {
-        var postsRef = listRef;
-        var x = Date();
-        var random = randomIntFromInterval(1, 400);
-        var randomColor = getRandomRolor();
-        var topzindex = $("#sharedlist li").getMaxZ() + 1;
-        $temp = $("<li></li>");
-        $temp.css({
-            'position': 'absolute',
-            'top': random + 'px',
-            'left': random / 2 + 'px',
-            'background': randomColor,
-            'z-index': topzindex
-        });
-        var css = $temp.attr('style');
-        try {
-            var newItemRef = postsRef.push({
-                author: userData.uid,
-                content: content,
-                timestamp: x,
-                css: css
-            });
-        } catch (e) {
-            $("#lists").find(".status").html(e);
-        }
+        // var postsRef = listRef;
+        // var x = Date();
+        // var random = randomIntFromInterval(1, 400);
+        // var randomColor = getRandomRolor();
+        // var topzindex = $("#sharedlist li").getMaxZ() + 1;
+        // $temp = $("<li></li>");
+        // $temp.css({
+        //     'position': 'absolute',
+        //     'top': random + 'px',
+        //     'left': random / 2 + 'px',
+        //     'background': randomColor,
+        //     'z-index': topzindex
+        // });
+        // var css = $temp.attr('style');
+        // try {
+        //     var newItemRef = postsRef.push({
+        //         author: userData.uid,
+        //         content: content,
+        //         timestamp: x,
+        //         css: css
+        //     });
+        // } catch (e) {
+        //     $("#lists").find(".status").html(e);
+        // }
+        var weddingData = {
+            author: userData.displayName,
+            uid: userData.uid,
+            body: content,
+            title: "Wedding",
+            budget: 0,
+            cost: 0,
+            authorPic: "picture"
+        };
+
+        // Get a key for a new Wedding.
+        var newWeddingKey = database.ref().child('weddings').push().key;
+
+        // Write the new post's data simultaneously in the wedding list and the user's post list.
+        var updates = {};
+        updates['/weddings/' + newWeddingKey] = weddingData;
+
+        var newRelationKey = database.ref().child('user-wedding').child(userData.uid).push().key;
+
+        updates['/user-wedding/' + userData.uid + '/' + newRelationKey] = newWeddingKey;
+
+        database.ref().update(updates);
     }
 	
 	//API call to remove items from Firebase
