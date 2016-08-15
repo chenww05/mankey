@@ -14,10 +14,19 @@ $(function() {
     var firebaseref = new Firebase("https://weddingplanner-5a174.firebaseio.com");
     var database = firebase.database();
 
+    var userData = firebase.auth().currentUser;
+
+    if (userData) {
+        // User is signed in.
+        console.log("User is signed in");
+    } else {
+        console.log("User is not signed in");
+        // No user is signed in.
+    }
+
 	//Global Variables for userData and the firebase reference to the list.
     var listRef = null;
-	var userData = null;
-	
+
 	//timer is used for few animations for the status messages.
 	var timer = null;
 	
@@ -249,13 +258,16 @@ $(function() {
             addCSSStringToItem(key, staticPosCSSString);
         });
     });
-	
-	//Handler for click events on the tabs.
-    $(".nav.navbar-nav > li > a").on('click', function(e) {
+
+    //Handler for click events on the tabs.
+    // my nav
+    $(".nav.navbar-nav > li > ul > li > a").on('click', function(e) {
         var id = $(this).attr('id');
         if (id == "logout") {
             return;
         }
+
+        $('#mainpage').hide();
 
         e.preventDefault();
         $(this).parent().addClass('active');
@@ -367,6 +379,7 @@ $(function() {
     });
 	
 	//Handling Signup process
+    // TODO automatically generate some templates
     $("#signup-btn").on('click', function() {
 
         var email = $("#email").val();

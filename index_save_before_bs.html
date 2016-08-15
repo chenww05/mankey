@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description">
+    <meta name="author">
+    <title>
+        Down the Aisle
+    </title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="css/sh-default.css" rel="stylesheet" default-stylesheet="true" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+    <style>
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+    </style>
+
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBTjgkKhvRuE5oPjiKKDvmMFrn2zvPBcJ8",
+            authDomain: "weddingplanner-5a174.firebaseapp.com",
+            databaseURL: "https://weddingplanner-5a174.firebaseio.com",
+            storageBucket: "weddingplanner-5a174.appspot.com",
+        };
+        firebase.initializeApp(config);
+    </script>
+</head>
+<body style="cursor: auto;">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href>Planner</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav pull-right">
+                <li>
+                    <a data-target="#login" href>Login</a>
+                </li>
+                <li>
+                    <a data-target="#register" href>Signup</a>
+                </li>
+                <li>
+                    <a data-target="#lists" href>Edit</a>
+                </li>
+                <li>
+                    <a id="logout" href>Logout</a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Logo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Wedding</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" placeholder="Search..">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                     </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> My Account</a></li>-->
+                <div class="dropdown">
+                    <button  type="button" data-toggle="dropdown">My Account
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a data-target="#login" href>Sign In</></li>
+                        <li><a data-target="#logout" href>Sign Out</></li>
+                        <li><a data-target="#register" href>Register</></li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="welcome"></div>
+<div class="container tab default" id="login">
+    <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">
+            <em class="stackhive-marker"></em>Login to your account
+        </h2>
+        <hr>
+        <input type="email" class="form-control" placeholder="Email address" required="" autofocus=""
+               id="login-email"><input type="password" class="form-control" placeholder="Password"
+                                       required="" id="login-password">
+        <button class="btn btn-primary" type="button" id="login-btn">
+            Login
+        </button>
+        <hr>
+        <div class="status alert alert-info hide"></div>
+    </form>
+    <form id="frmLogin" role="form">
+        <h2>Login</h2>
+
+        <div class="form-group">
+            <label for="txtEmail">Email address</label>
+            <input type="email" class="form-control" id="txtEmail" placeholder="Enter email" name="email"/>
+        </div>
+        <div class="form-group">
+            <label for="txtPass">Password</label>
+            <input type="password" class="form-control" id="txtPass" placeholder="Password" name="password"/>
+        </div>
+        <button type="submit" class="btn btn-default btn-block" id="login-btn">Login</button>
+        <br/>
+        <br/>
+        <h4>Login with</h4>
+        <a href="#" class="btn btn-primary bt-social" data-provider="facebook" id="facebook-btn">Facebook</a>
+        <a href="#" class="btn btn-warning bt-social" data-provider="twitter" id="twitter-btn">Twitter</a>
+        <a href="#" class="btn btn-danger bt-social" data-provider="google" id="google-btn">Google</a>
+        <!--<button type="submit" class="btn btn-primary bt-social" id="facebook-btn">Facebook</button>-->
+        <!--<button type="submit" class="btn btn-warning bt-social" id="twitter-btn">Twitter</button>-->
+        <!--<button type="submit" class="btn btn-danger bt-social" id="google-btn">Google</button>-->
+        <!--<button type="submit" class="btn btn-warning" id="anon-btn">Anon</button>-->
+
+    </form>
+</div>
+<div class="container tab hide" id="register">
+    <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">
+            Register a new account
+        </h2>
+        <hr>
+        <input type="text" class="form-control" placeholder="Your Name" required="" autofocus="" id="name"><input
+            type="email" class="form-control" placeholder="Email address" required=""
+            autofocus="" id="email"><input type="password" class="form-control" placeholder="Password" required=""
+                                           id="password">
+        <button class="btn btn-primary" type="button" id="signup-btn">
+            Sign Me Up!
+        </button>
+    </form>
+
+    <hr>
+    <div class="status alert alert-info hide"></div>
+</div>
+<div class="container tab hide" id="lists">
+    <div class="status alert alert-info hide"></div>
+    <br>
+    <h3>
+        Add Items to the Shared List
+    </h3>
+    <p>
+        <textarea type="text" id="listitem" placeholder="Add content that you want to add to your list"></textarea><br>
+        <a id="addItemToList" class="btn btn-success">Add it to your list</a>
+    </p>
+    <hr>
+    <a class="btn btn-info" id="sort-items">View Aligned (for OCD fellows!)</a>
+    <ul id="sharedlist" class="sharedlist" data-widget-class="sharedlist"></ul>
+</div><!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.firebase.com/js/client/2.2.3/firebase.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<script type="text/javascript" src="./firebasefunctions.js"></script>
+</body>
+</html>

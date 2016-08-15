@@ -7,7 +7,7 @@
     <meta name="description">
     <meta name="author">
     <title>
-        Real-time Shared Sticky Notes Using Bootstrap and Firebase
+        Down the Aisle
     </title>
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -16,6 +16,15 @@
     <link href="css/sh-default.css" rel="stylesheet" default-stylesheet="true" type="text/css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+    <style>
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+    </style>
+
     <script>
         // Initialize Firebase
         var config = {
@@ -28,37 +37,52 @@
     </script>
 </head>
 <body style="cursor: auto;">
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href>Planner</a>
+            <a class="navbar-brand" href="#">Brand</a>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav pull-right">
-                <li>
-                    <a data-target="#login" href>Login</a>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Wedding</a></li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><img src="img/bird.jpg" class="img-circle" height="50" width="50" alt="Avatar">
                 </li>
                 <li>
-                    <a data-target="#register" href>Signup</a>
-                </li>
-                <li>
-                    <a data-target="#lists" href>Edit</a>
-                </li>
-                <li>
-                    <a id="logout" href>Logout</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">My Account<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" data-target="#login" href="#">Login</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" data-target="#register" href="#">Signup</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" data-target="#lists" href="#">Edit</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" data-target="logout" href="#">Logout</a></li>
+                    </ul>
                 </li>
             </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
 <div class="welcome"></div>
-<div class="container tab default" id="login">
-    <form class="form-signin" role="form">
+<div class="container tab hide" id="login">
+
+    <br id="form-signin" role="form">
         <h2 class="form-signin-heading">
             <em class="stackhive-marker"></em>Login to your account
         </h2>
@@ -71,29 +95,11 @@
         </button>
         <hr>
         <div class="status alert alert-info hide"></div>
-    </form>
-    <form id="frmLogin" role="form">
-        <h2>Login</h2>
-
-        <div class="form-group">
-            <label for="txtEmail">Email address</label>
-            <input type="email" class="form-control" id="txtEmail" placeholder="Enter email" name="email" />
-        </div>
-        <div class="form-group">
-            <label for="txtPass">Password</label>
-            <input type="password" class="form-control" id="txtPass" placeholder="Password" name="password" />
-        </div>
-        <button type="submit" class="btn btn-default btn-block" id="login-btn">Login</button>
-        <br />
-        <br />
         <h4>Login with</h4>
         <a href="#" class="btn btn-primary bt-social" data-provider="facebook" id="facebook-btn">Facebook</a>
         <a href="#" class="btn btn-warning bt-social" data-provider="twitter" id="twitter-btn">Twitter</a>
         <a href="#" class="btn btn-danger bt-social" data-provider="google" id="google-btn">Google</a>
-        <!--<button type="submit" class="btn btn-primary bt-social" id="facebook-btn">Facebook</button>-->
-        <!--<button type="submit" class="btn btn-warning bt-social" id="twitter-btn">Twitter</button>-->
-        <!--<button type="submit" class="btn btn-danger bt-social" id="google-btn">Google</button>-->
-        <!--<button type="submit" class="btn btn-warning" id="anon-btn">Anon</button>-->
+        <hr>
 
     </form>
 </div>
@@ -128,7 +134,126 @@
     <hr>
     <a class="btn btn-info" id="sort-items">View Aligned (for OCD fellows!)</a>
     <ul id="sharedlist" class="sharedlist" data-widget-class="sharedlist"></ul>
-</div><!-- Bootstrap core JavaScript
+</div>
+
+
+<div class="container text-center" id="mainpage">
+    <div class="row">
+        <div class="col-sm-3 well">
+            <div class="well">
+                <p><a href="#">My Profile</a></p>
+                <img src="img/bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+            </div>
+            <div class="well">
+                <p><a href="#">Interests</a></p>
+                <p>
+                    <span class="label label-default">News</span>
+                    <span class="label label-primary">W3Schools</span>
+                    <span class="label label-success">Labels</span>
+                    <span class="label label-info">Football</span>
+                    <span class="label label-warning">Gaming</span>
+                    <span class="label label-danger">Friends</span>
+                </p>
+            </div>
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                <p><strong>Ey!</strong></p>
+                People are looking at your profile. Find out who.
+            </div>
+            <p><a href="#">Wedding</a></p>
+            <p><a href="#">Event</a></p>
+            <p><a href="#">Publish</a></p>
+        </div>
+        <div class="col-sm-7">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default text-left">
+                        <div class="panel-body">
+                            <p contenteditable="true">Status: Feeling Blue</p>
+                            <button type="button" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>John</p>
+                        <img src="img/bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>Bo</p>
+                        <img src="img/bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>Jane</p>
+                        <img src="img/bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>Anja</p>
+                        <img src="img/bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 well">
+            <div class="thumbnail">
+                <p>Upcoming Events:</p>
+                <img src="img/paris.jpg" alt="Paris" width="400" height="300">
+                <p><strong>San Francisco</strong></p>
+                <p>Fri. 27 November 2015</p>
+                <button class="btn btn-primary">Info</button>
+            </div>
+            <div class="well">
+                <p>ADS</p>
+            </div>
+            <div class="well">
+                <p>ADS</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid text-center">
+    <p>Down the Aile</p>
+</footer>
+<!-- Bootstrap core JavaScript
     ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
