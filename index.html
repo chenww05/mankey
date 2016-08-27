@@ -174,44 +174,11 @@
             <p><a href="#">Publish</a></p>
         </div>
         <div class="col-sm-7">
-            <!--<div ng-controller="EventEdit">-->
-                <div>
+            <div>
                 <p><a href = "#eventAdd">Add an Event</a></p>
                 <!--<p><a href = "#eventDetail">View an Event</a></p>-->
                 <p><a href = "#eventList">List all Events</a></p>
                 <div ng-view></div>
-                <script type = "text/ng-template" id = "eventAdd.htm">
-                    <form ng-submit="addEvent()">
-                        <input ng-model="text"/>
-                        <input ng-model="title"/>
-                        <select ng-model="template">
-                            <option value="reception">Reception</option>
-                            <option value="ceremony">Ceremony</option>
-                            <option value="others">Others</option>
-                        </select>
-                        <input type="text" ng-model="cost">
-                        <button type="submit">Add Event</button>
-                    </form>
-                </script>
-
-                <script type = "text/ng-template" id = "eventDetail.htm">
-                    <!--not necessary-->
-                    <!--<div ng-controller="EventDetailCtrl">-->
-                        <profile data="event" ></profile>
-                    <!--</div>-->
-
-                </script>
-
-
-                <script type = "text/ng-template" id = "eventList.htm">
-                    <ul>
-                        <li ng-repeat="event in events">
-                            <!-- edit a message -->
-                            <a href = "#eventDetail/{{ event.$id }}"><span ng-bind="event.title"></span></a>
-                            <button ng-click="events.$remove(event)">Delete Event</button>
-                        </li>
-                    </ul>
-                </script>
             </div>
 
             <div class="row">

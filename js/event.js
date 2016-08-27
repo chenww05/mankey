@@ -2,13 +2,13 @@ var mainApp = angular.module("mainApp", ['ngRoute', 'firebase']);
 
 mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/eventList', {
-        templateUrl: 'eventList.htm',
+        templateUrl: 'angular/eventList.tpl.html',
         controller: 'EventEdit'
     }).when('/eventDetail/:eventId', {
-        templateUrl: 'eventDetail.htm', //can replace with html pages
+        templateUrl: 'angular/eventDetail.tpl.html', //can replace with html pages
         controller: 'EventDetailCtrl'
     }).when('/eventAdd', {
-        templateUrl: 'eventAdd.htm',
+        templateUrl: 'angular/eventAdd.tpl.html',
         controller: 'EventEdit'
     }).otherwise({
         redirectTo: '/eventAdd'
