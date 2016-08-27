@@ -2,13 +2,13 @@ var mainApp = angular.module("mainApp", ['ngRoute', 'firebase']);
 
 mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/eventList', {
-        templateUrl: 'angular/eventList.tpl.html',
+        templateUrl: 'template/eventList.tpl.html',
         controller: 'EventEdit'
     }).when('/eventDetail/:eventId', {
-        templateUrl: 'angular/eventDetail.tpl.html', //can replace with html pages
+        templateUrl: 'template/eventDetail.tpl.html', //can replace with html pages
         controller: 'EventDetailCtrl'
     }).when('/eventAdd', {
-        templateUrl: 'angular/eventAdd.tpl.html',
+        templateUrl: 'template/eventAdd.tpl.html',
         controller: 'EventEdit'
     }).otherwise({
         redirectTo: '/eventAdd'
@@ -52,10 +52,10 @@ mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $fireba
                 $scope.getTemplateUrl = function () {
                     //basic handling. It could be delegated to different Services
                     if ($scope.event.template == "reception")
-                        return "angular/reception.tpl.html";
+                        return "template/reception.tpl.html";
                     if ($scope.event.template == "ceremony")
-                        return "angular/ceremony.tpl.html";
-                    return "angular/ceremony.tpl.html";
+                        return "template/ceremony.tpl.html";
+                    return "template/ceremony.tpl.html";
                 }
             }
         };
@@ -86,10 +86,10 @@ mainApp.controller("Controller", function ($scope, $firebaseArray) {
                 $scope.getTemplateUrl = function () {
                     //basic handling. It could be delegated to different Services
                     if ($scope.event.template == "reception")
-                        return "angular/reception.tpl.html";
+                        return "template/reception.tpl.html";
                     if ($scope.event.template == "ceremony")
-                        return "angular/ceremony.tpl.html";
-                    return "angular/ceremony.tpl.html";
+                        return "template/ceremony.tpl.html";
+                    return "template/ceremony.tpl.html";
                 }
             }
         };
