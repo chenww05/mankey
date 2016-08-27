@@ -197,11 +197,12 @@
 
                 <script type = "text/ng-template" id = "eventDetail.htm">
                     <h5> Event Detail View </h5>
-                    <span ng-bind="event.title"></span>
-
-                    <profile data="{{event}}"></profile>
+                    <div ng-controller="EventDetailCtrl">
+                        <profile data="event" ></profile>
+                    </div>
 
                 </script>
+
 
                 <script type = "text/ng-template" id = "eventList.htm">
                     <h5> Event List View </h5>

@@ -74,7 +74,7 @@ mainApp.controller("Controller", function ($scope, $firebaseArray) {
     };
 })
 
-    .directive("profile", function () {
+    .directive("isolated", function () { //no overlapping direcitive name otherwise bad
         return {
             template: '<ng-include src="getTemplateUrl()"/>',
             //templateUrl: unfortunately has no access to $scope.user.type
