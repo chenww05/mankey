@@ -11,7 +11,7 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'eventAdd.htm',
         controller: 'EventEdit'
     }).otherwise({
-        redirectTo: '/eventList'
+        redirectTo: '/eventAdd'
     });
 }]);
 

@@ -177,11 +177,10 @@
             <!--<div ng-controller="EventEdit">-->
                 <div>
                 <p><a href = "#eventAdd">Add an Event</a></p>
-                <p><a href = "#eventDetail">View an Event</a></p>
+                <!--<p><a href = "#eventDetail">View an Event</a></p>-->
                 <p><a href = "#eventList">List all Events</a></p>
                 <div ng-view></div>
                 <script type = "text/ng-template" id = "eventAdd.htm">
-                    <h5> Event Add View </h5>
                     <form ng-submit="addEvent()">
                         <input ng-model="text"/>
                         <input ng-model="title"/>
@@ -196,18 +195,16 @@
                 </script>
 
                 <script type = "text/ng-template" id = "eventDetail.htm">
-                    <h5> Event Detail View </h5>
-                    <div ng-controller="EventDetailCtrl">
+                    <!--not necessary-->
+                    <!--<div ng-controller="EventDetailCtrl">-->
                         <profile data="event" ></profile>
-                    </div>
+                    <!--</div>-->
 
                 </script>
 
 
                 <script type = "text/ng-template" id = "eventList.htm">
-                    <h5> Event List View </h5>
                     <ul>
-
                         <li ng-repeat="event in events">
                             <!-- edit a message -->
                             <a href = "#eventDetail/{{ event.$id }}"><span ng-bind="event.title"></span></a>
@@ -249,11 +246,7 @@
         </div>
     </div>
 </div>
-<div id="todoapp">
-    <ul id="todo-list"></ul>
-    <input type="text" id="new-todo" placeholder="New Todo" />
-    <button id="add-todo">Add</button>
-</div>
+
 <footer class="container-fluid text-center">
     <p>Down the Aile</p>
 </footer>
