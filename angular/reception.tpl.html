@@ -1,0 +1,15 @@
+<!--<div>-->
+    <!--<i><span ng-bind="event.text"></span></i> - Reception-->
+<!--</div>-->
+
+    <h2>Reception View</h2>
+    <input ng-model="event.text"  ng-click="events.$save(event)"/>
+    <input ng-model="event.title"  ng-click="events.$save(event)"/>
+    <input type = "text"  ng-model="event.cost">
+    <select ng-model="event.template"  ng-click="events.$save(event)">
+        <option value="reception">Reception</option>
+        <option value="ceremony">Ceremony</option>
+        <option value="others">Others</option>
+    </select>
+    <button ng-click="events.$save(event)">Update Event</button>
+    <button ng-click="events.$remove(event)">Delete Event</button>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app = "mainApp">
+<head>
+    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>-->
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+    <script src="app.js"></script>
+
+</head>
+<body >
+<div ng-controller="SampleCtrl">
+    <p><a href = "#reception">Reception Mode</a></p>
+    <p><a href = "#ceremony">Ceremony Mode</a></p>
+    <div ng-view></div>
+    <script type = "text/ng-template" id = "ceremony.htm">
+        <h2> Ceremony View </h2>
+        <ul>
+            <li ng-repeat="event in events">
+                <!-- edit a message -->
+                <input ng-model="event.text" />
+                <input ng-model="event.title" />
+                <input type = "text" ng-model="event.cost">
+                <select ng-model="event.template" >
+                    <option value="male">Reception</option>
+                    <option value="female">Ceremony</option>
+                    <option value="others">Others</option>
+                </select>
+                <button ng-click="events.$save(event)">Update Event</button>
+                <button ng-click="events.$remove(event)">Delete Event</button>
+            </li>
+        </ul>
+    </script>
+
+    <script type = "text/ng-template" id = "reception.htm">
+        <h2> Reception View </h2>
+
+        <ul>
+            <profile ng-repeat="event in events" data="event">
+            </profile>
+        </ul>
+    </script>
+
+
+<ul>
+    <h2> Overall View </h2>
+
+    <li ng-repeat="event in events">
+        <!-- edit a message -->
+        <input ng-model="event.text" ng-show="displayElement()" ng-click="events.$save(event)"/>
+        <input ng-model="event.title" ng-show="true" ng-click="events.$save(event)"/>
+        <input type = "text" ng-show="true" ng-model="event.cost">
+        <select ng-model="event.template" ng-show="true"  ng-click="events.$save(event)">
+            <option value="reception">Reception</option>
+            <option value="ceremony">Ceremony</option>
+            <option value="others">Others</option>
+        </select>
+        <button ng-click="events.$save(event)">Update Event</button>
+        <button ng-click="events.$remove(event)">Delete Event</button>
+    </li>
+</ul>
+<!-- push a new event onto the array -->
+<form ng-submit="addEvent()">
+    <input ng-model="text"/>
+    <input ng-model="title"/>
+    <select ng-model="template">
+        <option value="reception">Reception</option>
+        <option value="ceremony">Ceremony</option>
+        <option value="others">Others</option>
+    </select>
+    <input type="text" ng-model="cost">
+    <button type="submit">Add Event</button>
+</form>
+</div>
+</body>
+</html>

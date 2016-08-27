@@ -7,6 +7,66 @@ jQuery.fn.extend({
         }));
     }
 });
+
+
+var Todo = Backbone.Model.extend({
+    defaults: { title: "New Wedding" }
+});
+var TodoCollection = Backbone.Firebase.Collection.extend({
+    model: Todo,
+    url: "https://weddingplanner-5a174.firebaseio.com/todos"
+});
+
+
+var TodoView = Backbone.View.extend({
+    tagName:  "li",
+    template: _.template("<%= title %>"),
+    initialize: function() {
+        this.listenTo(this.model, "change", this.render);
+    },
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    },
+});
+
+// The view for the entire application
+var AppView = Backbone.View.extend({
+    el: $('#todoapp'),
+    events: {
+        "click #add-todo" : "createTodo",
+    },
+    initialize: function() {
+        this.list = this.$("#todo-list"); // the list to append to
+        this.input = this.$("#new-todo"); // the textbox for new todos
+        // by listening to when the collection changes we
+        // can add new items in realtime
+        this.listenTo(this.collection, 'add', this.addOne);
+    },
+    addOne: function(todo) {
+        var view = new TodoView({model: todo});
+        this.list.append(view.render().el);
+    },
+    createTodo: function(e) {
+        if (!this.input.val()) { return; }
+        // create a new location in firebase and save the model data
+        // this will trigger the listenTo method above and a new todo view
+        // will be created as well
+        this.collection.create({title: this.input.val()});
+        this.input.val('');
+    }
+});
+// Create a function to kick off our BackboneFire app
+function init() {
+    // The data we are syncing from our remote Firebase database
+    var collection = new TodoCollection();
+    var app = new AppView({ collection: collection });
+}
+// When the document is ready, call the init function
+$(function() {
+    init();
+});
+
 $(function() {
 	//Initialize Things for the app to be functional
 	
@@ -35,13 +95,15 @@ $(function() {
 	
 	//Routing for the Tabs in the navbar
     goToTab = function(tabname) {
-        if (tabname == "#lists") {
+        if (tabname == "#lists" || tabname == "#wedding") {
             if (userData === null) tabname = "#login";
         }
         $(".nav.navbar-nav > li > a").parent().removeClass('active');
         $(".nav.navbar-nav > li > a[data-target='" + tabname + "']").parent().addClass('active');
         $(".tab").addClass('hide');
         $(".tab" + tabname).removeClass('hide');
+        $(".nav.navbar-nav > li > ul > li > a").parent().removeClass('active');
+        $(".nav.navbar-nav > li > ul > li > a[data-target='" + tabname + "']").parent().addClass('active');
     }
 	
 	/*
@@ -259,8 +321,26 @@ $(function() {
         });
     });
 
-    //Handler for click events on the tabs.
-    // my nav
+    //Handler for click events on the tabs. //merge them
+    $(".nav.navbar-nav > li > a").on('click', function(e) {
+        var id = $(this).attr('id');
+        if (id == "logout" || id == "myaccount") {
+            return;
+        }
+
+        $('#mainpage').show();
+
+        e.preventDefault();
+        $(this).parent().addClass('active');
+        //force if logged in
+        if (userData !== null) {
+            goToTab('#wedding');
+            return;
+        } else {
+            goToTab($(this).attr('data-target'));
+        }
+    });
+    // my nav //merge
     $(".nav.navbar-nav > li > ul > li > a").on('click', function(e) {
         var id = $(this).attr('id');
         if (id == "logout") {
@@ -279,7 +359,7 @@ $(function() {
             goToTab($(this).attr('data-target'));
         }
     });
-	
+
 	//Logout action handler
     $("#logout").on('click', function() {
         firebase.auth().signOut().then(function() {
@@ -406,8 +486,11 @@ $(function() {
 
 
     });
-	
-	//Pushing new items to Firebase list. This is called when a user click on "AddNewItem Button"
+
+
+
+
+    //Pushing new items to Firebase list. This is called when a user click on "AddNewItem Button"
     var addListItem = function(content) {
         // var postsRef = listRef;
         // var x = Date();
@@ -455,6 +538,9 @@ $(function() {
         updates['/user-wedding/' + userData.uid + '/' + newRelationKey] = newWeddingKey;
 
         database.ref().update(updates);
+
+
+
     }
 	
 	//API call to remove items from Firebase
@@ -486,4 +572,28 @@ $(function() {
             $("#signup-btn").parent().find('.status').html("Error adding user data:" + error).show();
         });
     }
+
+    // Handle data edit and delete
+    $('#myModal').on('show', function() {
+        var tit = $('.confirm-delete').data('title');
+
+        $('#myModal .modal-body p').html("Desea eliminar al usuario " + '<b>' + tit +'</b>' + ' ?');
+        var id = $(this).data('id'),
+            removeBtn = $(this).find('.danger');
+    })
+
+    $('.confirm-delete').on('click', function(e) {
+        e.preventDefault();
+
+        var id = $(this).data('id');
+        $('#myModal').data('id', id).modal('show');
+    });
+
+    $('#btnYes').click(function() {
+        // handle deletion here
+        var id = $('#myModal').data('id');
+        $('[data-id='+id+']').parents('tr').remove();
+        $('#myModal').modal('hide');
+
+    });
 });

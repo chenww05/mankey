@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app = "mainApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,8 +16,15 @@
     <link href="css/sh-default.css" rel="stylesheet" default-stylesheet="true" type="text/css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+    <script src="https://cdn.firebase.com/libs/backbonefire/0.5.1/backbonefire.js"></script>
+    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+    <script src="js/event.js"></script>
     <style>
-        /* Set black background color, white text and some padding */
         footer {
             background-color: #555;
             color: white;
@@ -38,6 +45,8 @@
 </head>
 <body style="cursor: auto;">
 
+
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -55,7 +64,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Wedding</a></li>
+                <li><a data-target="#wedding" href="#">Wedding</a></li>
 
             </ul>
 
@@ -63,9 +72,9 @@
                 <li><img src="img/bird.jpg" class="img-circle" height="50" width="50" alt="Avatar">
                 </li>
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">My Account<span
+                    <a id="myaccount" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">My Account<span
                             class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <ul class="dropdown-menu " role="menu" aria-labelledby="menu1">
                         <li role="presentation"><a role="menuitem" tabindex="-1" data-target="#login" href="#">Login</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" data-target="#register" href="#">Signup</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" data-target="#lists" href="#">Edit</a></li>
@@ -165,18 +174,46 @@
             <p><a href="#">Publish</a></p>
         </div>
         <div class="col-sm-7">
+            <!--<div ng-controller="EventEdit">-->
+                <div>
+                <p><a href = "#eventAdd">Add an Event</a></p>
+                <p><a href = "#eventDetail">View an Event</a></p>
+                <p><a href = "#eventList">List all Events</a></p>
+                <div ng-view></div>
+                <script type = "text/ng-template" id = "eventAdd.htm">
+                    <h5> Event Add View </h5>
+                    <form ng-submit="addEvent()">
+                        <input ng-model="text"/>
+                        <input ng-model="title"/>
+                        <select ng-model="template">
+                            <option value="reception">Reception</option>
+                            <option value="ceremony">Ceremony</option>
+                            <option value="others">Others</option>
+                        </select>
+                        <input type="text" ng-model="cost">
+                        <button type="submit">Add Event</button>
+                    </form>
+                </script>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default text-left">
-                        <div class="panel-body">
-                            <p contenteditable="true">Status: Feeling Blue</p>
-                            <button type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-thumbs-up"></span> Like
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <script type = "text/ng-template" id = "eventDetail.htm">
+                    <h5> Event Detail View </h5>
+                    <span ng-bind="event.title"></span>
+
+                    <profile data="{{event}}"></profile>
+
+                </script>
+
+                <script type = "text/ng-template" id = "eventList.htm">
+                    <h5> Event List View </h5>
+                    <ul>
+
+                        <li ng-repeat="event in events">
+                            <!-- edit a message -->
+                            <a href = "#eventDetail/{{ event.$id }}"><span ng-bind="event.title"></span></a>
+                            <button ng-click="events.$remove(event)">Delete Event</button>
+                        </li>
+                    </ul>
+                </script>
             </div>
 
             <div class="row">
@@ -192,45 +229,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Bo</p>
-                        <img src="img/bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Jane</p>
-                        <img src="img/bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Anja</p>
-                        <img src="img/bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
+
         </div>
         <div class="col-sm-2 well">
             <div class="thumbnail">
@@ -249,16 +248,19 @@
         </div>
     </div>
 </div>
-
+<div id="todoapp">
+    <ul id="todo-list"></ul>
+    <input type="text" id="new-todo" placeholder="New Todo" />
+    <button id="add-todo">Add</button>
+</div>
 <footer class="container-fluid text-center">
     <p>Down the Aile</p>
 </footer>
-<!-- Bootstrap core JavaScript
-    ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdn.firebase.com/js/client/2.2.3/firebase.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./firebasefunctions.js"></script>
+
 </body>
 </html>
