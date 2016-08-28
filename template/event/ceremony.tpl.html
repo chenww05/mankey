@@ -5,11 +5,11 @@
 
         <form>
             <div class="form-group">
-                <label for="title1">Title</label>
+                <label for="title1" class="pull-left">Title</label>
                 <input ng-model="event.title" class="form-control" id="title1" ng-click="event.$save()"/>
             </div>
             <div class="form-group">
-                <label for="content1">Content</label>
+                <label for="content1" class="pull-left">Content</label>
                 <textarea class="form-control" ng-model="event.text" id="content1" rows="3" ng-click="event.$save()"></textarea>
             </div>
             <div class="form-group">
@@ -18,21 +18,20 @@
                 <small id="fileHelp" class="form-text text-muted">Upload your photos.</small>
             </div>
             <fieldset class="form-group">
-                <legend>Radio buttons</legend>
-                <div class="radio">
+                <div class="radio pull-left">
                     <label>
                         <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
                         Option one is this and that&mdash;be sure to include why it's great
                     </label>
                 </div>
-                <div class="radio">
+                <div class="radio pull-left">
                     <label>
                         <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
                         Option two can be something else and selecting it will deselect option one
                     </label>
                 </div>
             </fieldset>
-            <div class="checkbox">
+            <div class="checkbox pull-left">
                 <label>
                     <input type="checkbox"> Remind me at time
                 </label>
