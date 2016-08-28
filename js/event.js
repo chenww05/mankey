@@ -38,6 +38,8 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
     var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
     // create a synchronized array
     $scope.events = $firebaseArray(eventRef);
+    var userData = firebase.auth().currentUser;
+
 
     // TODO only user as owner
     var flowRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
@@ -49,9 +51,8 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
             event_text: $scope.event_text,
             event_title: $scope.event_title,
             event_template: $scope.event_template,
-            event_cost: $scope.event_cost
-            // event_flow_id: 1
-            //owner: 1
+            event_cost: $scope.event_cost,
+            event_owner: userData.uid
         });
     };
     $scope.addFlow = function() {
@@ -60,7 +61,7 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
             flow_text: $scope.flow_text,
             flow_template: $scope.flow_template,
             flow_cost: $scope.flow_cost,
-            flow_owner: 1
+            flow_owner: userData.uid
         })
     };
 });
@@ -71,8 +72,9 @@ mainApp.controller("EventAdd", function ($scope, $firebaseArray, $firebaseObject
     var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
 
     // create a synchronized array
-    $scope.flow = $firebaseObject(flowRef.child($routeParams.flowId));
+    $scope.flow = $firebaseArray(flowRef.child($routeParams.flowId).child('flow_events'));
     $scope.events = $firebaseArray(eventRef);
+    var userData = firebase.auth().currentUser;
 
     $scope.addEvent = function () {
         $scope.events.$add({
@@ -80,18 +82,18 @@ mainApp.controller("EventAdd", function ($scope, $firebaseArray, $firebaseObject
             event_title: $scope.event_title,
             event_template: $scope.event_template,
             event_cost: $scope.event_cost,
-            event_flow_id: $routeParams.flowId
+            event_flow_id: $routeParams.flowId,
+            event_owner: userData.uid
             //owner: 1
+        }).then(function(ref) {
+            // list.$indexFor(ref.key()); // returns location in the array
+            $scope.flow.$add({
+                flow_event: ref.key()
+            })
+
         });
-    };
-    $scope.addFlow = function() {
-        $scope.flows.$add({
-            flow_title: $scope.flow_title,
-            flow_text: $scope.flow_text,
-            flow_template: $scope.flow_template,
-            flow_cost: $scope.flow_cost,
-            flow_owner: 1
-        })
+
+
     };
 });
 
@@ -122,26 +124,10 @@ mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $routeP
     };
 });
 
-mainApp.controller("FlowDetailCtrl", function ($scope, $firebaseObject, $firebaseArray, $routeParams) {
+mainApp.controller("FlowDetailCtrl", function ($scope, $firebaseObject, $routeParams) {
     var flowRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
-    var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
-
     // create a synchronized array
     $scope.flow = $firebaseObject(flowRef.child($routeParams.flowId));//This is ok.
-    $scope.events = $firebaseArray(eventRef);
-
-    // $scope.addEventInFlow = function(flowId) {
-    //     console.log("flowId" + flowId);
-    //     $scope.events.$add({
-    //         event_text: $scope.event_text,
-    //         event_title: $scope.event_title,
-    //         event_template: $scope.event_template,
-    //         event_cost: $scope.event_cost,
-    //         event_flow_id: flowId
-    //         //owner: 1
-    //     });
-    // };
-
 })
 .directive("flow", function () {
     return {
