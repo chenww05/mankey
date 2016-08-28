@@ -1,5 +1,6 @@
 <div class="col-sm-12">
-    <div>
+    <!--ng-controller is needed-->
+    <div ng-controller="FlowDetailCtrl">
         <h5>Wedding View</h5>
 
         <form>
@@ -16,11 +17,10 @@
                 <input type="file" class="form-control-file" id="photoUpload1" aria-describedby="fileHelp">
                 <small id="fileHelp" class="form-text text-muted">Upload your photos.</small>
             </div>
-
             <button ng-click="flow.$save()" class="btn btn-primary">Update Flow</button>
 
             <!--TODO add events-->
-            <button ng-click="flow.$save()" class="btn btn-primary">Add Events</button>
+            <a ng-href="#eventAdd/{{ flow.$id }}" class="btn btn-primary">Add Events</a>
             <button ng-click="flow.$remove()" class="btn btn-primary">Delete Flow</button>
         </form>
     </div>

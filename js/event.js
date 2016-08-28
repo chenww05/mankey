@@ -15,9 +15,9 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
     }).when('/eventDetail/:eventId', {
         templateUrl: 'template/eventDetail.tpl.html',
         controller: 'EventDetailCtrl'
-    }).when('/eventAdd', {
+    }).when('/eventAdd/:flowId', {
         templateUrl: 'template/eventAdd.tpl.html',
-        controller: 'EventEdit'
+        controller: 'EventAdd'
     }).when('/flowAdd', {
         templateUrl: 'template/flowAdd.tpl.html',
         controller: 'EventEdit'
@@ -62,7 +62,37 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
             flow_cost: $scope.flow_cost,
             flow_owner: 1
         })
-    }
+    };
+});
+
+mainApp.controller("EventAdd", function ($scope, $firebaseArray, $firebaseObject, $routeParams) {
+
+    var flowRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
+    var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
+
+    // create a synchronized array
+    $scope.flow = $firebaseObject(flowRef.child($routeParams.flowId));
+    $scope.events = $firebaseArray(eventRef);
+
+    $scope.addEvent = function () {
+        $scope.events.$add({
+            event_text: $scope.event_text,
+            event_title: $scope.event_title,
+            event_template: $scope.event_template,
+            event_cost: $scope.event_cost,
+            event_flow_id: $routeParams.flowId
+            //owner: 1
+        });
+    };
+    $scope.addFlow = function() {
+        $scope.flows.$add({
+            flow_title: $scope.flow_title,
+            flow_text: $scope.flow_text,
+            flow_template: $scope.flow_template,
+            flow_cost: $scope.flow_cost,
+            flow_owner: 1
+        })
+    };
 });
 
 mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $routeParams) {
@@ -92,27 +122,42 @@ mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $routeP
     };
 });
 
-mainApp.controller("FlowDetailCtrl", function ($scope, $firebaseObject, $routeParams) {
-    var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
+mainApp.controller("FlowDetailCtrl", function ($scope, $firebaseObject, $firebaseArray, $routeParams) {
+    var flowRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
+    var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
+
     // create a synchronized array
-    $scope.flow = $firebaseObject(ref.child($routeParams.flowId));//This is ok.
+    $scope.flow = $firebaseObject(flowRef.child($routeParams.flowId));//This is ok.
+    $scope.events = $firebaseArray(eventRef);
+
+    // $scope.addEventInFlow = function(flowId) {
+    //     console.log("flowId" + flowId);
+    //     $scope.events.$add({
+    //         event_text: $scope.event_text,
+    //         event_title: $scope.event_title,
+    //         event_template: $scope.event_template,
+    //         event_cost: $scope.event_cost,
+    //         event_flow_id: flowId
+    //         //owner: 1
+    //     });
+    // };
 
 })
-    .directive("flow", function () {
-        return {
-            template: '<ng-include src="getTemplateUrl()"/>',
-            //templateUrl: unfortunately has no access to $scope.user.type
-            scope: {
-                flow: '=data' //what does this mean?
-            },
-            restrict: 'EA',
-            controller: function ($scope) {
-                $scope.getTemplateUrl = function () {
-                    //basic handling. It could be delegated to different Services
-                    if ($scope.flow.flow_template == "wedding")
-                        return "template/flow/wedding.tpl.html";
-                    return "template/flow/other.tpl.html";
-                }
+.directive("flow", function () {
+    return {
+        template: '<ng-include src="getTemplateUrl()"/>',
+        //templateUrl: unfortunately has no access to $scope.user.type
+        scope: {
+            flow: '=data' //what does this mean?
+        },
+        restrict: 'EA',
+        controller: function ($scope) {
+            $scope.getTemplateUrl = function () {
+                //basic handling. It could be delegated to different Services
+                if ($scope.flow.flow_template == "wedding")
+                    return "template/flow/wedding.tpl.html";
+                return "template/flow/other.tpl.html";
             }
-        };
-    });
+        }
+    };
+});
