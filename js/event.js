@@ -40,57 +40,23 @@ mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $fireba
     $scope.event = $firebaseObject(ref.child($routeParams.eventId));//This is ok.
 
 })
-    .directive("profile", function () {
-        return {
-            template: '<ng-include src="getTemplateUrl()"/>',
-            //templateUrl: unfortunately has no access to $scope.user.type
-            scope: {
-                event: '=data' //what does this mean?
-            },
-            restrict: 'EA',
-            controller: function ($scope) {
-                $scope.getTemplateUrl = function () {
-                    //basic handling. It could be delegated to different Services
-                    if ($scope.event.template == "reception")
-                        return "template/event/reception.tpl.html";
-                    if ($scope.event.template == "ceremony")
-                        return "template/event/ceremony.tpl.html";
+.directive("profile", function () {
+    return {
+        template: '<ng-include src="getTemplateUrl()"/>',
+        //templateUrl: unfortunately has no access to $scope.user.type
+        scope: {
+            event: '=data' //what does this mean?
+        },
+        restrict: 'EA',
+        controller: function ($scope) {
+            $scope.getTemplateUrl = function () {
+                //basic handling. It could be delegated to different Services
+                if ($scope.event.template == "reception")
+                    return "template/event/reception.tpl.html";
+                if ($scope.event.template == "ceremony")
                     return "template/event/ceremony.tpl.html";
-                }
+                return "template/event/ceremony.tpl.html";
             }
-        };
-    });
-
-mainApp.controller("Controller", function ($scope, $firebaseArray) {
-    var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/messages");
-    $scope.events = $firebaseArray(ref);
-    $scope.addEvent = function () {
-        $scope.events.$add({
-            text: $scope.text,
-            title: $scope.title,
-            template: $scope.template,
-            cost: $scope.cost,
-        });
+        }
     };
-})
-
-    .directive("isolated", function () { //no overlapping direcitive name otherwise bad
-        return {
-            template: '<ng-include src="getTemplateUrl()"/>',
-            //templateUrl: unfortunately has no access to $scope.user.type
-            scope: {
-                event: '=data'//what does this mean?
-            },
-            restrict: 'E',
-            controller: function ($scope) {
-                $scope.getTemplateUrl = function () {
-                    //basic handling. It could be delegated to different Services
-                    if ($scope.event.template == "reception")
-                        return "template/event/reception.tpl.html";
-                    if ($scope.event.template == "ceremony")
-                        return "template/event/ceremony.tpl.html";
-                    return "template/event/ceremony.tpl.html";
-                }
-            }
-        };
-    });
+});
