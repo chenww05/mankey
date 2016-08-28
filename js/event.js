@@ -37,8 +37,9 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
     // TODO only user as owner
     var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
     // create a synchronized array
-    $scope.events = $firebaseArray(eventRef);
     var userData = firebase.auth().currentUser;
+
+    $scope.events = $firebaseArray(eventRef.orderByChild('event_owner').equalTo(userData.uid));
 
 
     // TODO only user as owner
