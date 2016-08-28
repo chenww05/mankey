@@ -52,10 +52,10 @@ mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $fireba
                 $scope.getTemplateUrl = function () {
                     //basic handling. It could be delegated to different Services
                     if ($scope.event.template == "reception")
-                        return "template/reception.tpl.html";
+                        return "template/event/reception.tpl.html";
                     if ($scope.event.template == "ceremony")
-                        return "template/ceremony.tpl.html";
-                    return "template/ceremony.tpl.html";
+                        return "template/event/ceremony.tpl.html";
+                    return "template/event/ceremony.tpl.html";
                 }
             }
         };
@@ -86,10 +86,10 @@ mainApp.controller("Controller", function ($scope, $firebaseArray) {
                 $scope.getTemplateUrl = function () {
                     //basic handling. It could be delegated to different Services
                     if ($scope.event.template == "reception")
-                        return "template/reception.tpl.html";
+                        return "template/event/reception.tpl.html";
                     if ($scope.event.template == "ceremony")
-                        return "template/ceremony.tpl.html";
-                    return "template/ceremony.tpl.html";
+                        return "template/event/ceremony.tpl.html";
+                    return "template/event/ceremony.tpl.html";
                 }
             }
         };
