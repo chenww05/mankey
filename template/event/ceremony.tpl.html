@@ -1,16 +1,16 @@
 
 <div class="col-sm-12">
     <div>
-        <h2>Ceremony View</h2>
+        <h5>Ceremony View</h5>
 
         <form>
             <div class="form-group">
                 <label for="title1">Title</label>
-                <input ng-model="event.title" class="form-control" id="title1" ng-click="events.$save(event)"/>
+                <input ng-model="event.title" class="form-control" id="title1" ng-click="event.$save()"/>
             </div>
             <div class="form-group">
                 <label for="content1">Content</label>
-                <textarea class="form-control" ng-model="event.text" id="content1" rows="3" ng-click="events.$save(event)"></textarea>
+                <textarea class="form-control" ng-model="event.text" id="content1" rows="3" ng-click="event.$save()"></textarea>
             </div>
             <div class="form-group">
                 <label for="photoUpload1">Upload Photos</label>
@@ -37,8 +37,8 @@
                     <input type="checkbox"> Remind me at time
                 </label>
             </div>
-            <button ng-click="events.$save(event)" class="btn btn-primary">Update Event</button>
-            <button ng-click="events.$remove(event)" class="btn btn-primary">Delete Event</button>
+            <button ng-click="event.$save()" class="btn btn-primary">Update Event</button>
+            <button ng-click="event.$remove()" class="btn btn-primary">Delete Event</button>
         </form>
     </div>
 </div>

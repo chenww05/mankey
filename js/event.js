@@ -33,10 +33,9 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
     };
 });
 
-mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $firebaseArray, $routeParams) {
+mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $routeParams) {
     var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/messages");
     // create a synchronized array
-    $scope.events = $firebaseArray(ref);
     $scope.event = $firebaseObject(ref.child($routeParams.eventId));//This is ok.
 
 })
