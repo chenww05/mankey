@@ -1,11 +1,11 @@
 <form ng-submit="addEvent()">
-    <input ng-model="text"/>
-    <input ng-model="title"/>
-    <select ng-model="template">
+    <input ng-model="event_text"/>
+    <input ng-model="event_title"/>
+    <select ng-model="event_template">
         <option value="reception">Reception</option>
         <option value="ceremony">Ceremony</option>
         <option value="others">Others</option>
     </select>
-    <input type="text" ng-model="cost">
+    <input type="text" ng-model="event_cost">
     <button type="submit">Add Event</button>
 </form>

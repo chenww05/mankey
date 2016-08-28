@@ -1,0 +1,27 @@
+<div class="col-sm-12">
+    <div>
+        <h5>Wedding View</h5>
+
+        <form>
+            <div class="form-group">
+                <label for="title1">Wedding Title</label>
+                <input ng-model="flow.flow_title" class="form-control" id="title1" ng-click="flow.$save()"/>
+            </div>
+            <div class="form-group">
+                <label for="content1">Wedding Content</label>
+                <textarea class="form-control" ng-model="flow.flow_text" id="content1" rows="3" ng-click="flow.$save()"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="photoUpload1">Upload Photos</label>
+                <input type="file" class="form-control-file" id="photoUpload1" aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Upload your photos.</small>
+            </div>
+
+            <button ng-click="flow.$save()" class="btn btn-primary">Update Flow</button>
+
+            <!--TODO add events-->
+            <button ng-click="flow.$save()" class="btn btn-primary">Add Events</button>
+            <button ng-click="flow.$remove()" class="btn btn-primary">Delete Flow</button>
+        </form>
+    </div>
+</div>

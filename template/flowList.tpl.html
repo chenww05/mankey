@@ -1,0 +1,7 @@
+<ul>
+    <h5>Flow List View</h5>
+    <li ng-repeat="flow in flows">
+        <a href = "#flowDetail/{{ flow.$id }}"><span ng-bind="flow.flow_title"></span></a>
+        <button ng-click="flows.$remove(flow)">Delete Wedding</button>
+    </li>
+</ul>

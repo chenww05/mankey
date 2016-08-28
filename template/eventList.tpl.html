@@ -1,7 +1,7 @@
 <ul>
     <h5>Event List View</h5>
     <li ng-repeat="event in events">
-        <a href = "#eventDetail/{{ event.$id }}"><span ng-bind="event.title"></span></a>
+        <a href = "#eventDetail/{{ event.$id }}"><span ng-bind="event.event_title"></span></a>
         <button ng-click="events.$remove(event)">Delete Event</button>
     </li>
 </ul>

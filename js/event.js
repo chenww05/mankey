@@ -1,3 +1,11 @@
+var config = {
+    apiKey: "AIzaSyBTjgkKhvRuE5oPjiKKDvmMFrn2zvPBcJ8",
+    authDomain: "weddingplanner-5a174.firebaseapp.com",
+    databaseURL: "https://weddingplanner-5a174.firebaseio.com",
+    storageBucket: "weddingplanner-5a174.appspot.com",
+};
+firebase.initializeApp(config);
+
 var mainApp = angular.module("mainApp", ['ngRoute', 'firebase']);
 
 mainApp.config(['$routeProvider', function ($routeProvider) {
@@ -5,11 +13,20 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'template/eventList.tpl.html',
         controller: 'EventEdit'
     }).when('/eventDetail/:eventId', {
-        templateUrl: 'template/eventDetail.tpl.html', //can replace with html pages
+        templateUrl: 'template/eventDetail.tpl.html',
         controller: 'EventDetailCtrl'
     }).when('/eventAdd', {
         templateUrl: 'template/eventAdd.tpl.html',
         controller: 'EventEdit'
+    }).when('/flowAdd', {
+        templateUrl: 'template/flowAdd.tpl.html',
+        controller: 'EventEdit'
+    }).when('/flowList', {
+        templateUrl: 'template/flowList.tpl.html',
+        controller: 'EventEdit'
+    }).when('/flowDetail/:flowId', {
+        templateUrl: 'template/flowDetail.tpl.html',
+        controller: 'FlowDetailCtrl'
     }).otherwise({
         redirectTo: '/eventAdd'
     });
@@ -17,24 +34,39 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
 
 mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
 
-    var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/messages");
+    // TODO only user as owner
+    var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
     // create a synchronized array
-    $scope.events = $firebaseArray(ref);
-    // add new items to the array
-    // the message is automatically added to our Firebase database!
+    $scope.events = $firebaseArray(eventRef);
+
+    // TODO only user as owner
+    var flowRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
+    // create a synchronized array
+    $scope.flows = $firebaseArray(flowRef);
 
     $scope.addEvent = function () {
         $scope.events.$add({
-            text: $scope.text,
-            title: $scope.title,
-            template: $scope.template,
-            cost: $scope.cost,
+            event_text: $scope.event_text,
+            event_title: $scope.event_title,
+            event_template: $scope.event_template,
+            event_cost: $scope.event_cost
+            // event_flow_id: 1
+            //owner: 1
         });
     };
+    $scope.addFlow = function() {
+        $scope.flows.$add({
+            flow_title: $scope.flow_title,
+            flow_text: $scope.flow_text,
+            flow_template: $scope.flow_template,
+            flow_cost: $scope.flow_cost,
+            flow_owner: 1
+        })
+    }
 });
 
 mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $routeParams) {
-    var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/messages");
+    var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
     // create a synchronized array
     $scope.event = $firebaseObject(ref.child($routeParams.eventId));//This is ok.
 
@@ -50,12 +82,37 @@ mainApp.controller("EventDetailCtrl", function ($scope, $firebaseObject, $routeP
         controller: function ($scope) {
             $scope.getTemplateUrl = function () {
                 //basic handling. It could be delegated to different Services
-                if ($scope.event.template == "reception")
+                if ($scope.event.event_template == "reception")
                     return "template/event/reception.tpl.html";
-                if ($scope.event.template == "ceremony")
+                if ($scope.event.event_template == "ceremony")
                     return "template/event/ceremony.tpl.html";
                 return "template/event/ceremony.tpl.html";
             }
         }
     };
 });
+
+mainApp.controller("FlowDetailCtrl", function ($scope, $firebaseObject, $routeParams) {
+    var ref = new Firebase("https://weddingplanner-5a174.firebaseio.com/flows");
+    // create a synchronized array
+    $scope.flow = $firebaseObject(ref.child($routeParams.flowId));//This is ok.
+
+})
+    .directive("flow", function () {
+        return {
+            template: '<ng-include src="getTemplateUrl()"/>',
+            //templateUrl: unfortunately has no access to $scope.user.type
+            scope: {
+                flow: '=data' //what does this mean?
+            },
+            restrict: 'EA',
+            controller: function ($scope) {
+                $scope.getTemplateUrl = function () {
+                    //basic handling. It could be delegated to different Services
+                    if ($scope.flow.flow_template == "wedding")
+                        return "template/flow/wedding.tpl.html";
+                    return "template/flow/other.tpl.html";
+                }
+            }
+        };
+    });
