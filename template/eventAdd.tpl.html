@@ -1,11 +1,39 @@
-<form ng-submit="addEvent()">
-    <input ng-model="event_text"/>
-    <input ng-model="event_title"/>
-    <select ng-model="event_template">
-        <option value="reception">Reception</option>
-        <option value="ceremony">Ceremony</option>
-        <option value="others">Others</option>
-    </select>
-    <input type="text" ng-model="event_cost">
-    <button type="submit">Add Event</button>
+<div class="col-sm-12">
+<p>Add an Event</p>
+<form class="form-horizontal" ng-submit="addEvent()">
+    <div class="form-group" >
+        <label for="title1" class="col-sm-2 control-label">Title</label>
+        <div class="col-sm-10">
+            <input ng-model="event_title" type="text" class="form-control" id="title1" placeholder="My Event">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="text1" class="col-sm-2 control-label">Content</label>
+        <div class="col-sm-10">
+            <textarea ng-model="event_text" id="text1" class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="template1" class="col-sm-2 control-label ">Template</label>
+            <select ng-model="event_template" id="template1" class="pull-right">
+                <option value="reception">Reception</option>
+                <option value="ceremony">Ceremony</option>
+                <option value="others">Others</option>
+            </select>
+    </div>
+    <div class="form-group pull-left">
+        <div class="col-sm-offset-2 col-sm-10 pull-left">
+            <div class="checkbox pull-left">
+                <label>
+                    <input type="checkbox"> Remind
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10 ">
+            <button type="submit" class="btn btn-primary pull-right">Done</button>
+        </div>
+    </div>
 </form>
+</div>

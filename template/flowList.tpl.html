@@ -1,11 +1,9 @@
 <ul>
-    <h5>Flow List View</h5>
+    <h5>All Weddings</h5>
     <table style="width:100%">
         <tr ng-repeat="flow in flows">
             <td class="pull-left"><a href = "#flowDetail/{{ flow.$id }}" ><span ng-bind="flow.flow_title"></span></a></td>
             <td class="pull-right"><a href = "flows.$remove(flow)">Delete</a></td>
-
-            <!--<td class="pull-right"><button class="btn btn-danger bt-social btn-sm"  ng-click="flows.$remove(flow)">Delete</button></td>-->
         </tr>
     </table>
 </ul>

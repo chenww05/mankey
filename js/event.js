@@ -12,6 +12,9 @@ mainApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/eventList', {
         templateUrl: 'template/eventList.tpl.html',
         controller: 'EventEdit'
+    }).when('/eventFlowList/:flowId', {
+        templateUrl: 'template/eventList.tpl.html',
+        controller: 'EventFlowEditCtrl'
     }).when('/eventDetail/:eventId', {
         templateUrl: 'template/eventDetail.tpl.html',
         controller: 'EventDetailCtrl'
@@ -65,6 +68,16 @@ mainApp.controller("EventEdit", function ($scope, $firebaseArray) {
             flow_owner: userData.uid
         })
     };
+});
+
+mainApp.controller("EventFlowEditCtrl", function ($scope, $firebaseArray, $firebaseObject, $routeParams) {
+
+    var eventRef = new Firebase("https://weddingplanner-5a174.firebaseio.com/events");
+    var flowId = $routeParams.flowId;
+
+    var userData = firebase.auth().currentUser;
+    $scope.events = $firebaseArray(eventRef.orderByChild('event_flow_id').equalTo(flowId));
+
 });
 
 mainApp.controller("EventAdd", function ($scope, $firebaseArray, $firebaseObject, $routeParams) {
